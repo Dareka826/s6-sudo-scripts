@@ -1,6 +1,5 @@
 #!/bin/sh
 set -eu
-unset PWD
 
 # Verify user's password, before allowing command execution
 if ! /root/s6-sudod/chk_pw/chk_pw "${REMOTEEUID}"; then
@@ -8,8 +7,12 @@ if ! /root/s6-sudod/chk_pw/chk_pw "${REMOTEEUID}"; then
     exit 1
 fi
 
+# First arg should be new pwd
+cd "${1}"
+shift 1
+
 # Execute user-supplied command
-exec sh -c "$(\
+exec env -i "$(command -v sh)" -c "$(\
     printf "%s\n" "$@" \
         | sed \
             -e "s/'/'\\\\''/g" \
