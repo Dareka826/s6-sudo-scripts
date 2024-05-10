@@ -7,6 +7,7 @@ define SOCK_PATH "/tmp/s6-sudo-socket"
 foreground { rm -f "${SOCK_PATH}" "${SOCK_PATH}.lock" }
 background { sh /root/s6-sudod/sock_perms.sh "${SOCK_PATH}" }
 
+# root's PATH
 importas -D "/usr/bin:/bin:/usr/sbin:/sbin" PATH PATH
 
 s6-ipcserver -1 -p -a 0770 "${SOCK_PATH}"
@@ -14,7 +15,7 @@ s6-ipcserver -1 -p -a 0770 "${SOCK_PATH}"
 importas -i REMOTEEUID IPCREMOTEEUID
 importas -i REMOTEEGID IPCREMOTEEGID
 
-exec -c
+exec -c # Clear env
 s6-sudod -t 10
 
 env PATH="${PATH}" REMOTEEUID="${REMOTEEUID}" REMOTEEGID="${REMOTEEGID}"
