@@ -1,0 +1,4 @@
+[submodule "chk_pw"]
+	path = chk_pw
+	url = https://github.com/Dareka826/chk_pw
+	branch = master
