@@ -5,7 +5,7 @@ fdmove 1 3 # Readiness notif
 define SOCK_PATH "/tmp/s6-sudo-socket"
 
 foreground { rm -f "${SOCK_PATH}" "${SOCK_PATH}.lock" }
-background { dash /root/s6-sudod/sock_perms.sh "${SOCK_PATH}" }
+background { sh /root/s6-sudod/sock_perms.sh "${SOCK_PATH}" }
 
 importas -D "/usr/bin:/bin:/usr/sbin:/sbin" PATH PATH
 
@@ -18,4 +18,4 @@ exec -c
 s6-sudod -t 10
 
 env PATH="${PATH}" REMOTEEUID="${REMOTEEUID}" REMOTEEGID="${REMOTEEGID}"
-dash /root/s6-sudod/auth.sh
+sh /root/s6-sudod/auth.sh
