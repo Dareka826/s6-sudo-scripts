@@ -7,6 +7,6 @@ A set of scripts for a basic s6-sudo based suidless sudo setup
 Example s6-sudo usage:
 ```sh
 ssudo() {
-    s6-sudo /tmp/s6-sudo-socket "$(pwd)" env PATH="${PATH}" "$@"
+    s6-sudo /tmp/s6-sudo-socket "$(pwd)" env PATH="${PATH:-/usr/bin:/bin:/usr/sbin:/sbin}" TERM="${TERM:-xterm-256color}" "$@"
 }
 ```
