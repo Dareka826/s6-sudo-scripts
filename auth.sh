@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+unset PWD
+
+# Verify user's password, before allowing command execution
+if ! /root/s6-sudod/chk_pw/chk_pw "${REMOTEEUID}"; then
+    printf "Authentication Failed\n"
+    exit 1
+fi
+
+# Execute user-supplied command
+exec sh -c "$(\
+    printf "%s\n" "$@" \
+        | sed \
+            -e "s/'/'\\\\''/g" \
+            -e "s/^/'/"  -e "s/$/'/" \
+        | tr '\n' ' '
+)"
